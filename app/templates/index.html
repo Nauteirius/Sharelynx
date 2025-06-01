@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="homepage-hero">
+    <div class="hero-content text-center text-white">
+        <h1 class="display-4 animate__animated animate__fadeInDown">
+            <i class="fas fa-cloud-showers-heavy me-3"></i>Sharelynx
+        </h1>
+        <p class="lead animate__animated animate__fadeInUp delay-1">
+            Your digital cardboard
+        </p>
+        
+        <div class="cta-buttons animate__animated animate__fadeInUp delay-2">
+            {% if not current_user.is_authenticated %}
+            <a href="{{ url_for('main.register') }}" class="btn btn-lg btn-primary glow-on-hover me-3">
+                <i class="fas fa-rocket me-2"></i>Get Started
+            </a>
+            {% else %}
+            <a href="{{ url_for('main.files') }}" class="btn btn-lg btn-success glow-on-hover me-3">
+                <i class="fas fa-folder-open me-2"></i>My Files
+            </a>
+            {% endif %}
+			<a href="https://github.com/yourusername/yourrepo" target="_blank" class="btn btn-lg btn-dark">
+				<i class="fab fa-github me-2"></i>My Code
+			</a>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card h-100 shadow hover-effect">
+                <div class="card-body text-center">
+                    <i class="fas fa-shield-alt fa-3x text-primary mb-3"></i>
+                    <h3>Bank-Level Security</h3>
+                    <p class="text-white-50">Military grade encryption and 2FA protection</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card h-100 shadow hover-effect">
+                <div class="card-body text-center">
+                    <i class="fas fa-bolt fa-3x text-success mb-3"></i>
+                    <h3>Lightning Fast</h3>
+                    <p class="text-white-50">Global CDN with edge caching technology</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card h-100 shadow hover-effect">
+                <div class="card-body text-center">
+                    <i class="fas fa-infinity fa-3x text-danger mb-3"></i>
+                    <h3>Unlimited Space*</h3>
+                    <p class="text-white-50">*Up to 5TB for premium users</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+	.homepage-hero {
+		background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)),
+					url("{{ url_for('static', filename='images/background-animation.gif') }}") center/cover;
+		min-height: 70vh;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 15px;
+		margin: 20px;
+	}
+    
+    .hero-content {
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+    
+    .cta-buttons .btn {
+        min-width: 200px;
+        margin: 10px 0;
+    }
+    
+    .hover-effect {
+        transition: transform 0.3s ease;
+    }
+    
+    .hover-effect:hover {
+        transform: translateY(-10px);
+    }
+    
+    .delay-1 {
+        animation-delay: 0.3s;
+    }
+    
+    .delay-2 {
+        animation-delay: 0.6s;
+    }
+    
+    @media (max-width: 768px) {
+        .homepage-hero {
+            min-height: 50vh;
+            margin: 10px;
+        }
+        
+        .display-4 {
+            font-size: 2.5rem;
+        }
+    }
+</style>
+{% endblock %}

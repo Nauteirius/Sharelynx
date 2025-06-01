@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h3 class="mb-4 animate__animated animate__fadeIn">File Explorer</h3>
+    
+    <!-- Upload Form -->
+    {% if current_user.is_authenticated and current_user.has_role('user') %}
+    <div class="card mb-4 shadow hover-effect">
+        <div class="card-body">
+            <h5 class="card-title"><i class="fas fa-cloud-upload-alt me-2"></i>Upload File</h5>
+            <form method="post" enctype="multipart/form-data" action="{{ url_for('main.upload_file') }}">
+                <div class="mb-3">
+                    <input class="form-control" type="file" name="file" required>
+                    <small class="form-text"> 
+                        Allowed formats: {{ config.ALLOWED_EXTENSIONS|join(', ') }}<br>
+                        Max size: {{ (config.MAX_CONTENT_LENGTH // 1024 // 1024) }}MB
+                    </small>
+                </div>
+                <div class="mb-3">
+                    <select class="form-select" name="visibility">
+                        <option value="public">Public</option>
+                        <option value="protected">Protected</option>
+                        {% if current_user.has_role('admin') %}
+                        <option value="private">Private</option>
+                        {% endif %}
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary glow-on-hover">
+                    <i class="fas fa-upload me-2"></i>Upload
+                </button>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- File List -->
+    <div class="row g-4">
+        {% for file in files %}
+        <div class="col-md-3 mb-4">
+            <div class="card h-100 shadow hover-effect">
+                <!-- Preview -->
+                {% set extension = file.filename.split('.')[-1]|lower %}
+                <div class="file-preview">
+                    {% if extension in ['png', 'jpg', 'jpeg', 'gif'] %}
+                    <img src="{{ url_for('main.download_file', visibility=file.visibility, filename=file.filename) }}"
+                         class="preview-media"
+                         alt="{{ file.filename }}"
+                         loading="lazy">
+                    {% elif extension in ['mp4', 'mov', 'avi', 'mkv'] %}
+                    <video class="preview-media" controls muted>
+                        <source src="{{ url_for('main.download_file', visibility=file.visibility, filename=file.filename) }}"
+                                type="video/{{ extension }}">
+                    </video>
+                    {% else %}
+                    <div class="file-icon">
+                        <i class="fas fa-file fa-4x text-secondary"></i>
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <div class="card-body">
+                    <!-- Badge -->
+                    <span class="badge rounded-pill 
+                        {% if file.visibility == 'private' %}bg-danger
+                        {% elif file.visibility == 'protected' %}bg-warning
+                        {% else %}bg-primary{% endif %}">
+                        <i class="fas fa-lock me-1"></i>{{ file.visibility|capitalize }}
+                    </span>
+                    
+                    <!-- File Info -->
+                    <h6 class="card-title mt-2">
+                        <a href="{{ url_for('main.download_file', visibility=file.visibility, filename=file.filename) }}"
+                           class="text-decoration-none file-name stretched-link">
+                            {{ file.filename|truncate(25) }}
+                        </a>
+                    </h6>
+                    <small class="file-date">
+                        {{ file.upload_date|datetimeformat('%Y-%m-%d') }}
+                    </small>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="col-12">
+            <div class="alert alert-info shadow">
+                <i class="fas fa-info-circle me-2"></i>No files found
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+    .hover-effect {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .hover-effect:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+    }
+    
+    .preview-media {
+        height: 200px;
+        width: 100%;
+        object-fit: cover;
+        border-top-left-radius: 0.375rem;
+        border-top-right-radius: 0.375rem;
+    }
+    
+    .file-icon {
+        height: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f8f9fa;
+    }
+    
+    .glow-on-hover {
+        transition: all 0.3s ease;
+    }
+    
+    .glow-on-hover:hover {
+        filter: brightness(110%);
+        box-shadow: 0 0 15px rgba(13, 110, 253, 0.25);
+    }
+	
+	.form-text {
+        color: white;
+        text-shadow: 1px 1px 2px black;
+		
+		
+		
+	.file-name {
+    color: white;
+    text-shadow: 1px 1px 2px black;
+    font-weight: 500;
+}
+
+	.file-date {
+    color: white;
+    text-shadow: 1px 1px 2px black;
+    font-size: 0.875rem;
+}
+    }
+</style>
+{% endblock %}

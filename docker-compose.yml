@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./uploads:/app/uploads  # Mapowanie folderu z plikami
+      - ./app:/app              # Mapowanie kodu (tylko do rozwoju!)
+    environment:
+      - FLASK_ENV=production
+      - SECRET_KEY=your-secret-key
+      - DATABASE_URL=sqlite:////app/site.db
+    restart: unless-stopped
+
+  # Redis dla cache (opcjonalnie)
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+volumes:
+  redis_data:

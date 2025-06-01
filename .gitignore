@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Instance
+instance/
+*.db
+*.sqlite
+*.sqlite3
+
+# Uploads
+uploads/
+
+# Environment
+.env
+.venv/
+venv/
+
+# IDE
+.vscode/
+.idea/
+
+# Sensitive data
+config.py
+cookie.txt
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+
