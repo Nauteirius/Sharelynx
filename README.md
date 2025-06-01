@@ -2,8 +2,8 @@
 
 Sharelynx is a secure file sharing platform with military-grade encryption, user authentication, and role-based access control.
 
-![App Screenshot](/app/static/images/screen.png)
-![App Screenshot](/app/static/images/screen1.png)
+![App Screenshot](/app/static/images/screen.jpg)
+![App Screenshot](/app/static/images/screen1.jpg)
 
 ## Features
 - 🔐 User authentication with secure password hashing
